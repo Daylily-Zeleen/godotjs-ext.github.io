@@ -1,0 +1,16 @@
+{
+  "name": "godotjs-ext-docs",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@10.11.0",
+  "scripts": {
+    "dev": "vitepress dev docs",
+    "build": "vitepress build docs",
+    "preview": "vitepress preview docs",
+    "check:i18n": "node scripts/check-i18n.mts"
+  },
+  "devDependencies": {
+    "minisearch": "^7.1.2",
+    "vitepress": "1.6.4"
+  }
+}

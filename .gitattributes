@@ -1,0 +1,6 @@
+# Keep the repository line-ending neutral: the sources are written with LF and
+# the docs are built on Linux CI, so let git normalise on checkout.
+* text=auto eol=lf
+*.png binary
+*.ico binary
+*.webp binary
