@@ -51,18 +51,27 @@ docs verbatim fails in several places. This page itemises the differences.
   `static` / `shared` run the static-binding codegen at build time, emitting
   `src/static_binding/gen/dispatch_*.gen.cpp`. The active mode is readable at runtime as
   `BINDING_MODE` from `godot-jsb`.
+- **`api_tool`: a lazy binary store** - upstream has no such component. Method records are split into a
+  hot layer (48-72 B) that every ptrcall reads and a cold `ApiMethodDetail` layer loaded on first
+  access by the editor's codegen; the class-method table dropped from 3,475,812 B to 1,110,366 B and
+  the layouts are pinned by `static_assert`.
+- **Narrow integer slots truncate instead of rejecting**, matching the engine (its `binder_common.h`
+  never checks width, while the static leg used to reject). Out-of-range values only warn in debug
+  builds; release pays nothing.
 
 ## JS/TS API
 
 - **Two annotation forms.** This repository recommends `createClassBinder()` (`@bind()` /
   `@bind.export(...)`); the `@Export` / `@ExportSignal` / `@Tool` decorators in the upstream docs are the
   **legacy** form - still supported here, but marked deprecated. See [Annotations](/en/scripting/annotations).
-- **Old paths are gone.** The `jsb.core` module no longer provides the annotations mentioned in older
-  upstream docs (nor do `GLOBAL_GET` / `EDITOR_GET` / `callable()` / `to_array_buffer()` / `$wait()` live
-  where they used to): those names now live in the `godot` and `godot.annotations` modules.
+- **Both `jsb.core` and `godot.annotations` work.** The runtime exports both sets: the legacy
+  `@Export` / `@ExportSignal` / `@Tool` / `Rpc` / `OnReady` decorators (all marked `@deprecated Use
+  createClassBinder() instead.`) and the current `createClassBinder()` from `godot.annotations`.
+  `GLOBAL_GET` / `EDITOR_GET`, mentioned in older upstream docs, are still exported by `jsb.core` too.
 - **Workers were modularised**: the global `Worker` became `JSWorker` in the `godot.worker` module
-  (with `JSWorkerParent`). The `worker.ontransfer` in upstream's `worker.md` **does not exist** in this
-  repository's declarations.
+  (with `JSWorkerParent`). Upstream's declarations also carry the deprecated
+  `worker.ontransfer` / `JSWorkerParent.transfer()` shapes; this repository exposes only the
+  `postMessage(message, transfer?)` contract, which the type checker enforces.
 - **64-bit integers**: this repository builds with `JSB_WITH_BIGINT`, so integers beyond the safe range
   come back as `BigInt` in the Godot -> JS direction; JS -> Godot accepts `number` and `bigint`. Probe
   with `BIGINT_FOR_64BIT` from `godot-jsb`.

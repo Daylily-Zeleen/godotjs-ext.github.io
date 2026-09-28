@@ -43,17 +43,24 @@ GodotJS-Ext 的起点是 [godotjs/GodotJS](https://github.com/godotjs/GodotJS)�
 - 绑定模式可选：`binding_mode=static|shared|dynamic`（默认 `shared`）。
   `static` / `shared` 会在构建时跑静态绑定 codegen，产出 `src/static_binding/gen/dispatch_*.gen.cpp`。
   运行时可从 `godot-jsb` 的 `BINDING_MODE` 读到当前模式。
+- **`api_tool` 惰性二进制库**：上游没有这个组件。方法记录分热/冷两层——热层（48~72 B）供每次
+  ptrcall 读取，冷层 `ApiMethodDetail` 由编辑器 codegen 首次访问时才加载；类方法表从
+  3,475,812 B 降到 1,110,366 B，布局由 `static_assert` 钉住。
+- **窄整型槽截断而非拒绝**：与引擎一致（引擎的 `binder_common.h` 从不校验宽度，而静态腿原先会拒），
+  越界只在 debug 构建告警，release 零开销。
 
 ## JS/TS API
 
 - **注解有两套写法**。本仓推荐 `createClassBinder()`（`@bind()` / `@bind.export(...)`）；
   上游文档里的 `@Export` / `@ExportSignal` / `@Tool` 等是**旧式装饰器**，本仓仍支持但已标为弃用。
   见[注解](/scripting/annotations)。
-- **旧路径已移除**。上游历史文档提到的 `jsb.core` 不再提供注解（`GLOBAL_GET` / `EDITOR_GET` /
-  `callable()` / `to_array_buffer()` / `$wait()` 的旧位置也都不在了）：
-  这些名字现在分别位于 `godot` 与 `godot.annotations` 模块。
+- **`jsb.core` 与 `godot.annotations` 都有效**。本仓的运行时同时导出两套：
+  `@Export` / `@ExportSignal` / `@Tool` / `Rpc` / `OnReady` 等旧式装饰器（均为 `@deprecated Use
+  createClassBinder() instead.`），以及 `godot.annotations` 里的新式 `createClassBinder()`。
+  上游历史文档提到的 `GLOBAL_GET` / `EDITOR_GET` 同样仍由 `jsb.core` 导出。
 - **Worker 模块化**：全局 `Worker` 改为 `godot.worker` 模块里的 `JSWorker`（配 `JSWorkerParent`）。
-  上游 `worker.md` 里的 `worker.ontransfer` 在本仓的类型声明中**不存在**。
+  上游类型声明里的 `worker.ontransfer` / `JSWorkerParent.transfer()` 是 deprecated 形态；
+  本仓只保留 `postMessage(message, transfer?)` 这一种传送契约。
 - **64 位整数**：本仓启用 `JSB_WITH_BIGINT`，超出安全整数的 64 位整数在 Godot → JS 方向以 `BigInt`
   返回；JS → Godot 接受 `number` 与 `bigint`。可用 `godot-jsb` 的 `BIGINT_FOR_64BIT` 探测。
 - **静态成员暴露**：`@bind.exposed.const()` / `@bind.exposed.shared()` 是本仓的能力
