@@ -4,8 +4,6 @@ GodotJS-Ext 的起点是 [godotjs/GodotJS](https://github.com/godotjs/GodotJS)�
 上游仓库里的 JS/TS 运行时、模块系统、注解体系都源自那里，很多 API 文档仍然适用；
 但**分发形态与实现已经分叉**，照搬上游文档会在若干处踩坑。本页逐条列出差异。
 
-> 本页的每条结论都对着上游 `main` 的源码核过，不是凭印象归纳的。
-
 ## 一句话总结
 
 | | 上游 GodotJS | GodotJS-Ext（本仓） |
@@ -51,8 +49,8 @@ GodotJS-Ext 的起点是 [godotjs/GodotJS](https://github.com/godotjs/GodotJS)�
   运行时可从 `godot-jsb` 的 `BINDING_MODE` 读到当前模式。
   上游的 `JSB_WITH_STATIC_BINDINGS` 在 `jsb.config.h` 里写着 **`// NOT IMPLEMENTED YET`** 且恒为 `0`，
   静态绑定文件体是空的 `#if`；上游唯一可用的是运行期 ClassDB 反射。
-- **`api_tool` 惰性二进制库**：上游没有这个组件（`grep api_tool` 全树 0 命中）——它的绑定数据
-  来自运行期 ClassDB 反射与编辑器生成的 `.d.ts`。本仓方法记录分热/冷两层：热层（48~72 B）供每次
+- **`api_tool` 惰性二进制库**：上游没有这个组件——它的绑定数据来自运行期 ClassDB 反射与
+  编辑器生成的 `.d.ts`。本仓方法记录分热/冷两层：热层（48~72 B）供每次
   ptrcall 读取，冷层 `ApiMethodDetail` 由编辑器 codegen 首次访问时才加载；类方法表从
   3,475,812 B 降到 1,110,366 B，布局由 `static_assert` 钉住。
 - **窄整型槽截断而非拒绝**：与引擎一致（引擎的 `binder_common.h` 从不校验宽度，而静态腿原先会拒），

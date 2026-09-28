@@ -5,8 +5,6 @@ the module system and the annotation set all originate there, so much of its API
 applies - but **the distribution form and the implementation have diverged**, and copying upstream
 docs verbatim fails in several places. This page itemises the differences.
 
-> Every claim here was checked against upstream's own sources on `main`, not inferred from names.
-
 ## In one line
 
 | | Upstream GodotJS | GodotJS-Ext (this repository) |
@@ -60,11 +58,11 @@ docs verbatim fails in several places. This page itemises the differences.
   `BINDING_MODE` from `godot-jsb`. Upstream's `JSB_WITH_STATIC_BINDINGS` is annotated
   `// NOT IMPLEMENTED YET` in its `jsb.config.h` and is hardcoded to `0` - its static-binding file body
   is an empty `#if` - so runtime ClassDB reflection is all it has.
-- **`api_tool`: a lazy binary store** - upstream has no such component (`grep api_tool` over its whole
-  tree: 0 hits); it produces binding data through runtime ClassDB reflection plus editor-generated
-  `.d.ts`. Here method records are split into a hot layer (48-72 B) that every ptrcall reads and a cold
-  `ApiMethodDetail` layer loaded on first access by the editor's codegen; the class-method table
-  dropped from 3,475,812 B to 1,110,366 B and the layouts are pinned by `static_assert`.
+- **`api_tool`: a lazy binary store** - upstream has no such component; it produces binding data
+  through runtime ClassDB reflection plus editor-generated `.d.ts`. Here method records are split into
+  a hot layer (48-72 B) that every ptrcall reads and a cold `ApiMethodDetail` layer loaded on first
+  access by the editor's codegen; the class-method table dropped from 3,475,812 B to 1,110,366 B and
+  the layouts are pinned by `static_assert`.
 - **Narrow integer slots truncate instead of rejecting**, matching the engine (its `binder_common.h`
   never checks width, while the static leg used to reject). Out-of-range values only warn in debug
   builds; release pays nothing.
