@@ -5,7 +5,7 @@ The editor plugin does that for you.
 
 ## 1. Install the preset files
 
-In the Godot editor open **Project -> Tools -> GodotJS -> Install Preset Files** and confirm. The
+In the Godot editor open **Project -> Tools -> GodotJS-Ext -> Install Project Files** and confirm. The
 plugin writes a set of files into the project:
 
 | File | Purpose |
@@ -18,7 +18,6 @@ plugin writes a set of files into the project:
 | `.godot/godotjs_ext/.gdignore` | Same, for the compile output directory |
 | `typings/godot.minimal.d.ts` | Declarations for `godot` / `godot-jsb` / `godot.worker` |
 | `typings/godot.mix.d.ts` | Declarations mixing built-in modules and generated types |
-| `typings/type.extension.d.ts` | Type extensions (when enabled) |
 | `typings/godot.worker.d.ts` | Declarations for `godot.worker` (absent from Web builds) |
 | `typings/jsb.runtime.bundle.d.ts` | The runtime bundle's outward type view |
 | `typings/jsb.editor.bundle.d.ts` | The editor bundle's outward type view |
@@ -53,15 +52,15 @@ npx tsc -w       # watch mode
 Output goes to `.godot/godotjs_ext/`, which is where the runtime loads `.js` and source maps from.
 Two editor entry points exist:
 
-- The **Start TSC** button in the bottom **GodotJS** panel's REPL toolbar (watch mode)
-- **Project -> Tools -> GodotJS -> Generate Types** (below)
+- The **Start TSC** button in the bottom **GodotJS-Ext** panel's REPL toolbar (watch mode)
+- **Project -> Tools -> GodotJS-Ext -> Generate Types** (below)
 
 ## 4. Generate type declarations
 
 The first time you open a project (and after an engine upgrade) the API data and type declarations
 must be generated, otherwise `import { Node } from "godot"` cannot resolve.
 
-- Menu: **Project -> Tools -> GodotJS -> Generate Types**
+- Menu: **Project -> Tools -> GodotJS-Ext -> Generate Types**
 - Or on the command line (what CI uses):
 
 ```bash

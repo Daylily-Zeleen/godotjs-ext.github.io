@@ -32,7 +32,7 @@ GodotJS-Ext 是一个 **GDExtension**。你不需要替换或重新编译 Godot 
 > 工程，所以把这个包**解压覆盖**到你用的桌面引擎包之上（目录结构相同，会干净合并），
 > 或者直接用 QuickJS-NG 包 —— 它本身已包含 QuickJS 的 web 构建。
 
-原始 QuickJS 已被 QuickJS-NG 取代，不再出包；`use_quickjs=yes` 仍可本地构建。
+发布包覆盖上表中出包的引擎。`use_quickjs=yes` 是保留的本地构建选项，我们不专门为它构建发布包。
 选择依据见 [JS 引擎](/runtime/engines)。
 
 ## 3. 解压到工程
@@ -68,7 +68,7 @@ Godot 4 会在打开工程时扫描 `addons/*.gdextension`；如果没扫到，�
 
 ## 5. 确认加载成功
 
-编辑器底部会出现 **GodotJS** 面板（REPL 与 Statistics 两个页签）。看到它就说明运行时起来了。
+编辑器底部会出现 **GodotJS-Ext** 面板（REPL 与 Statistics 两个页签）。看到它就说明运行时起来了。
 
 ## 与上游 GodotJS 的区别
 

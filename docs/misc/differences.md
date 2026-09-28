@@ -29,7 +29,8 @@ GodotJS-Ext 的起点是 [godotjs/GodotJS](https://github.com/godotjs/GodotJS)�
 
 - 本仓把 **Node.js** 作为一等引擎（`use_node=yes`，基于 libnode），上游没有。
 - **Web** 在本仓是独立的一条腿（`platform=web` 且不加引擎标志 = 浏览器宿主 JS），并区分带线程/不带线程。
-- **QuickJS（原始）已被 QuickJS-NG 取代**：CI 不再构建它、不出包，`use_quickjs=yes` 保留为本地选项。
+- 发布包覆盖 v8 / qjs-ng / jsc / node / web 五个引擎；`use_quickjs=yes` 是保留的本地构建选项，
+  我们不专门为它构建发布包。
 - 平台/引擎组合由 CI 构建矩阵**单点派生**，发布脚本与门禁共用同一份 plan。
 
 ## 构建
@@ -64,9 +65,9 @@ GodotJS-Ext 的起点是 [godotjs/GodotJS](https://github.com/godotjs/GodotJS)�
 
 ## 编辑器
 
-- 底部 dock 名 **GodotJS**，含 REPL 与 Statistics 两个页签。
-- 菜单集中在 **项目 → 工具 → GodotJS**：
-  Install Preset Files、Generate Types、Generate API Data、Config Enabled Classes Bindings、
+- 底部 dock 名 **GodotJS-Ext**，含 REPL 与 Statistics 两个页签。
+- 菜单集中在 **项目 → 工具 → GodotJS-Ext**：
+  Generate API Data、Install Project Files、Generate Types、Config Enabled TS Classes、
   Generate All Scene Nodes Types、Generate All Resource Types、Cleanup Invalid Files。
 - **源码注释即文档**：插件会解析 `.ts`/`.js` 源码注释，把类/成员的文档提供给编辑器
   （`@bind.help()` 优先级更高）。实现是一个常驻的 Node 工具进程。

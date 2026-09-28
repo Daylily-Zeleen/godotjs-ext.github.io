@@ -12,10 +12,10 @@ GodotJS-Ext 支持多种 JavaScript 引擎。装的是哪个引擎取决于你�
 | **JavaScriptCore** | `use_jsc=yes` | `jsc` | 仅 macOS（arm64）与 iOS（arm64） |
 | **Node.js** | `use_node=yes` | `node` | 仅桌面：Windows、Linux（x86_64）、macOS（arm64） |
 | **浏览器宿主 JS** | `platform=web` 且不加引擎标志 | `web` | 仅 Web（wasm32） |
-| QuickJS（原始） | `use_quickjs=yes` | ❌ 不出包 | 仅本地构建 |
+| QuickJS | `use_quickjs=yes` | 不出包 | 本地构建选项 |
 
 - 发布的包名体现平台：`godotjs-ext-v8-windows-linux-macos-android-ios.zip` 等，见[安装](/guide/installation)。
-- **原始 QuickJS 已被 QuickJS-NG 取代**，CI 不再构建它，也不出包；`use_quickjs=yes` 仍然可以本地编。
+- 发布包只覆盖上表中**出包**的引擎；`use_quickjs=yes` 是保留的本地构建选项，我们不专门为它构建发布包。
 - `web` 不是 `v8`：`platform=web` 且不带引擎标志时，构建出的必然是**浏览器宿主 JS**
   （`JSB_WITH_WEB`），因为 v8 没有 web 预编译库。发布归属上它是独立的包。
 

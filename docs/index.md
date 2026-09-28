@@ -31,7 +31,7 @@ GodotJS-Ext 让你像写普通脚本一样写 TypeScript：类继承 Godot 对�
 #    （包内是 addons/godotjs-ext.daylily-zeleen/ 的完整目录）
 unzip godotjs-ext-v8-windows-linux-macos-android-ios.zip -d /path/to/your/project
 
-# 2. 打开工程，GodotJS 底部面板 → Install Preset Files
+# 2. 打开工程，GodotJS-Ext 底部面板 → Install Project Files
 # 3. 装好 TS 工具链并编译
 cd /path/to/your/project
 pnpm install

@@ -32,7 +32,7 @@ the engine itself.
 #    (it contains the full addons/godotjs-ext.daylily-zeleen/ tree)
 unzip godotjs-ext-v8-windows-linux-macos-android-ios.zip -d /path/to/your/project
 
-# 2. Open the project, then use the GodotJS bottom panel -> Install Preset Files
+# 2. Open the project, then use the GodotJS-Ext bottom panel -> Install Project Files
 # 3. Install the TS toolchain and compile
 cd /path/to/your/project
 pnpm install

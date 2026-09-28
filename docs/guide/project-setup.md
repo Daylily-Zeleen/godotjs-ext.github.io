@@ -4,7 +4,7 @@
 
 ## 1. 安装预设文件
 
-在 Godot 编辑器里打开 **项目 → 工具 → GodotJS → Install Preset Files**，
+在 Godot 编辑器里打开 **项目 → 工具 → GodotJS-Ext → Install Project Files**，
 确认后插件会在工程内写入一组文件：
 
 | 文件 | 作用 |
@@ -17,7 +17,6 @@
 | `.godot/godotjs_ext/.gdignore` | 同上，针对编译输出目录 |
 | `typings/godot.minimal.d.ts` | `godot` / `godot-jsb` / `godot.worker` 等模块的声明 |
 | `typings/godot.mix.d.ts` | 内置模块与生成类型的混合声明 |
-| `typings/type.extension.d.ts` | 类型扩展（如启用） |
 | `typings/godot.worker.d.ts` | `godot.worker` 模块声明（Web 构建不含） |
 | `typings/jsb.runtime.bundle.d.ts` | 运行时包对外的类型视图 |
 | `typings/jsb.editor.bundle.d.ts` | 编辑器包对外的类型视图 |
@@ -51,15 +50,15 @@ npx tsc -w       # 监视模式
 输出到 `.godot/godotjs_ext/`，运行时从那里加载 `.js` 与 source map。
 编辑器为此提供了两个入口：
 
-- 底部 **GodotJS** 面板 → REPL 工具栏上的 **Start TSC**（监视模式）
-- **项目 → 工具 → GodotJS → Generate Types**（下面）
+- 底部 **GodotJS-Ext** 面板 → REPL 工具栏上的 **Start TSC**（监视模式）
+- **项目 → 工具 → GodotJS-Ext → Generate Types**（下面）
 
 ## 4. 生成类型声明
 
 第一次打开工程（或引擎升级后）需要生成 API 数据与类型声明，否则 `import { Node } from "godot"`
 解析不到。
 
-- 菜单：**项目 → 工具 → GodotJS → Generate Types**
+- 菜单：**项目 → 工具 → GodotJS-Ext → Generate Types**
 - 或命令行（CI 用）：
 
 ```bash

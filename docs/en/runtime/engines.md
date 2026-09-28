@@ -13,12 +13,12 @@ you downloaded** - it is fixed at build time and cannot be switched at runtime (
 | **JavaScriptCore** | `use_jsc=yes` | `jsc` | macOS (arm64) and iOS (arm64) only |
 | **Node.js** | `use_node=yes` | `node` | Desktop only: Windows, Linux (x86_64), macOS (arm64) |
 | **Browser host JS** | `platform=web` with no engine flag | `web` | Web only (wasm32) |
-| QuickJS (original) | `use_quickjs=yes` | not packaged | Local builds only |
+| QuickJS | `use_quickjs=yes` | not packaged | Local build option |
 
 - Archive names state the platforms, e.g. `godotjs-ext-v8-windows-linux-macos-android-ios.zip`; see
   [Installation](/en/guide/installation).
-- **The original QuickJS is superseded by QuickJS-NG**: CI no longer builds it and it is not packaged,
-  though `use_quickjs=yes` still builds locally.
+- The archives cover the **packaged** engines in the table above; `use_quickjs=yes` is a retained local
+  build option that is not built for release.
 - `web` is not `v8`: with `platform=web` and no engine flag the build is necessarily the **browser host
   JS** (`JSB_WITH_WEB`), because no V8 prebuilt exists for web. In release terms it is its own archive.
 

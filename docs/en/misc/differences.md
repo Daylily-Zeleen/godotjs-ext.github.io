@@ -33,8 +33,8 @@ docs verbatim fails in several places. This page itemises the differences.
 - **Node.js** is a first-class engine here (`use_node=yes`, libnode-based); upstream has no such leg.
 - **Web** is its own leg here (`platform=web` with no engine flag = the browser host JS), and threaded
   and non-threaded variants are distinguished.
-- **The original QuickJS is superseded by QuickJS-NG**: CI no longer builds it and it is not packaged;
-  `use_quickjs=yes` remains as a local option.
+- The release archives cover five engines (v8 / qjs-ng / jsc / node / web); `use_quickjs=yes` is a
+  retained local build option that is not built for release.
 - Platform/engine pairings are **derived from one place**, the CI build matrix; the packaging script
   and the release gate share that same plan.
 
@@ -76,9 +76,9 @@ docs verbatim fails in several places. This page itemises the differences.
 
 ## Editor
 
-- The bottom dock is called **GodotJS** and has REPL and Statistics tabs.
-- The commands live under **Project -> Tools -> GodotJS**: Install Preset Files, Generate Types,
-  Generate API Data, Config Enabled Classes Bindings, Generate All Scene Nodes Types, Generate All
+- The bottom dock is called **GodotJS-Ext** and has REPL and Statistics tabs.
+- The commands live under **Project -> Tools -> GodotJS-Ext**: Generate API Data, Install Project
+  Files, Generate Types, Config Enabled TS Classes, Generate All Scene Nodes Types, Generate All
   Resource Types, Cleanup Invalid Files.
 - **Source comments are documentation**: the plugin parses `.ts`/`.js` source comments and hands class
   and member docs to the editor (`@bind.help()` takes precedence). It is implemented as a resident Node

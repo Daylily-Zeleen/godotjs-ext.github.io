@@ -34,8 +34,8 @@ it works as-is.
 > you use (the directory layout is identical, so it merges cleanly), or simply use the QuickJS-NG
 > package, which already includes a QuickJS-based web build.
 
-The original QuickJS engine is superseded by QuickJS-NG and is no longer packaged; `use_quickjs=yes`
-still builds locally. See [JS engines](/en/runtime/engines) for how to choose.
+The archives cover the engines listed as packaged above. `use_quickjs=yes` is a retained local build
+option that is not built for release. See [JS engines](/en/runtime/engines) for how to choose.
 
 ## 3. Unpack into your project
 
@@ -70,8 +70,8 @@ Godot 4 scans `addons/*.gdextension` when a project is opened; restart the edito
 
 ## 5. Confirm it loaded
 
-A **GodotJS** panel appears at the bottom of the editor (tabs: REPL and Statistics). Seeing it means
-the runtime is up.
+A **GodotJS-Ext** panel appears at the bottom of the editor (tabs: REPL and Statistics). Seeing it
+means the runtime is up.
 
 ## Difference from upstream GodotJS
 
