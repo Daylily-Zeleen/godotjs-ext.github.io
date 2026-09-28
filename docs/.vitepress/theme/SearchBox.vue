@@ -8,7 +8,7 @@
  * is ours. It reuses the very dependency the provider already ships.
  */
 import localSearchIndex from "@localSearchIndex";
-import { useData, useRouter, withBase } from "vitepress";
+import { useData, useRouter } from "vitepress";
 import MiniSearch from "minisearch";
 import { computed, onBeforeUnmount, onMounted, ref, shallowRef, watch } from "vue";
 
@@ -87,7 +87,10 @@ function onPanelKeydown(event: KeyboardEvent) {
 function go(hit: SectionResult) {
     open.value = false;
     query.value = "";
-    router.go(withBase(hit.id));
+    // `hit.id` already carries `site.base`: the local-search provider builds its
+    // document ids as `path.join(base, relativePath)`. Applying `withBase` again
+    // would double the prefix and 404.
+    router.go(hit.id);
 }
 
 onMounted(() => window.addEventListener("keydown", onKeydown));
@@ -121,7 +124,8 @@ onBeforeUnmount(() => window.removeEventListener("keydown", onKeydown));
                         @mouseenter="active = i"
                         @click="go(hit)"
                     >
-                        <a :href="withBase(hit.id)">
+                        <!-- `hit.id` already includes the deployment base. -->
+                        <a :href="hit.id">
                             <span class="gje-search__title">
                                 <template v-for="(crumb, j) in [...(hit.titles ?? []), hit.title]" :key="j">
                                     <span v-if="j > 0" class="gje-search__sep">›</span>{{ crumb }}
