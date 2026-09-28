@@ -203,9 +203,10 @@ Available: `Export`, `ExportVar`, `export_`, `ExportMultiline`, `ExportRange`, `
 `export_multiline`, `export_range`, `tool`, `icon`, ...).
 
 > [!WARNING]
-> The `@Export` / `@ExportSignal` style in the upstream docs is this very set. It still works, but is
-> not recommended for new projects. The `jsb.core` import path mentioned in older upstream docs no
-> longer exists: these names now have exactly one source, `godot.annotations`.
+> This set is **the same one upstream ships**, and it still works in both - it is simply deprecated
+> (`@deprecated Use createClassBinder() instead.`). Prefer `createClassBinder()` for new code.
+> Do not copy the older upstream docs here: `jsb.core` today exports `GLOBAL_GET` / `EDITOR_GET` and a
+> few legacy aliases; `godot.annotations` is the canonical source for the annotations above.
 
 ## See also
 

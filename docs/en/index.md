@@ -49,7 +49,7 @@ Details in [Installation](/en/guide/installation) and [Project setup](/en/guide/
 - Source comments become in-editor script documentation
 - Generated type hints: scene nodes, resource types, the return type of `ResourceLoader.load()`
 - Static bindings: selectable `binding_mode=static|shared|dynamic`
-- Workers and ShadowRealm (experimental)
+- Workers and ShadowRealm (experimental; ShadowRealm is this repository's own JS-facing realm API)
 - Interop with GDScript: `@tool`, exported properties, signals, static members
 
 ## Relationship to upstream GodotJS

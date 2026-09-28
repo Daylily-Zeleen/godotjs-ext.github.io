@@ -198,9 +198,10 @@ export default class Legacy extends Node {
 （`signal`、`export_multiline`、`export_range`、`tool`、`icon`…）。
 
 > [!WARNING]
-> 上游文档里的 `@Export` / `@ExportSignal` 等写法就是这一套。它们仍然工作，但新项目不建议使用。
-> 上游历史文档里提到的 `jsb.core` 路径已经不存在了：这些名字现在只有 `godot.annotations`
-> 一个来源。
+> 这一套在**上游与本仓都仍然工作**，只是都标成了弃用（`@deprecated Use createClassBinder()
+> instead.`）；新项目请用 `createClassBinder()`。
+> 不要照搬更早的上游文档：`jsb.core` 现在只导出 `GLOBAL_GET` / `EDITOR_GET` 与少数旧别名，
+> 上面这些注解的规范来源是 `godot.annotations`。
 
 ## 相关
 

@@ -48,7 +48,7 @@ npx tsc
 - 源码注释即可成为编辑器里的脚本文档
 - 生成式类型提示：场景节点、资源类型、`ResourceLoader.load()` 的返回类型
 - 静态绑定：可选 `binding_mode=static|shared|dynamic`
-- Worker 与 ShadowRealm（实验性）
+- Worker 与 ShadowRealm（实验性；ShadowRealm 是本仓新增的 JS 侧 realm API）
 - 与 GDScript 互操作：`@tool`、导出属性、信号、静态成员
 
 ## 与上游 GodotJS 的关系
