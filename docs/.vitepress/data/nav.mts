@@ -51,6 +51,9 @@ export const sections: NavSection[] = [
     {
         zh: "其他",
         en: "Misc",
-        items: [{ link: "/misc/differences", zh: "与上游 GodotJS 的差异", en: "Differences from upstream" }],
+        items: [
+            { link: "/misc/differences", zh: "与上游 GodotJS 的差异", en: "Differences from upstream" },
+            { link: "/misc/known-issues", zh: "已知问题", en: "Known issues" },
+        ],
     },
 ];
