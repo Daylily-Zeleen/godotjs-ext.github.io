@@ -2,7 +2,7 @@
 
 本页记录当前版本里用户会遇到、尚未处理的问题。
 
-> 最后核对：2026-10-05。
+> 最后核对：2026-10-12。
 
 ## 1. 编辑器看不到脚本的模块依赖
 
@@ -31,4 +31,30 @@
 宿主与来源同线程时在本帧内送达，跨线程则排队。
 
 **不受影响**：`evaluate` / `importValueSync` 这类同步入口、以及 shadow realm 的消息回调，仍按同步语义抛给调用方。
+
+## 4. 脚本加载失败时，控制台会多出一行以 `Uncaught ` 开头的裸日志
+
+**现象**：`use_node=yes`（以及 v8 后端）下，若某个 `.ts` / `.js` 脚本在加载阶段就抛异常（例如入口脚本一上来就
+`throw new Error(...)`），控制台会看到形如：
+
+```
+WARNING: [jsb][Warning] something went wrong on loading 'res://...'
+Uncaught Error: <你的错误信息>
+Error: <你的错误信息>
+    at ...
+```
+
+其中 `Uncaught Error: ...` 单独占一行、没有 `ERROR/WARNING` 前缀。
+
+**原因**：脚本加载失败由 `Environment::load()` 就地捕获并打印（`jsb_environment.cpp`），它把异常信息拼进
+一条多行日志。而 node / v8 后端从 V8 取异常文案（`v8::Message::Get()`）时，V8 用的固定模板是
+`"Uncaught %"`（`MessageTemplate::kUncaughtException`）——**即使异常已被 try/catch 接住**，文案照样带
+`Uncaught ` 前缀。该前缀被日志里的换行顶到行首，就成了这行裸日志。quickjs / JavaScriptCore 后端读的是
+`err.message`，不会出现这个前缀。
+
+**影响**：纯粹是日志外观。异常本身已被正常捕获、`load()` 正常返回失败码，运行行为不受影响。副作用是任何
+按行扫描控制台输出、把行首 `Uncaught ...` 当成「未捕获异常」的工具/脚本会被误触发。
+
+**当前做法**：无（未处理）。按行匹配控制台文本时，避免用行首 `^Uncaught` 作为判据；改用带前缀的形式
+（如 `[jsb][Error]`）或直接以退出码 / 哨兵行判定。
 
