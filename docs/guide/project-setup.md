@@ -20,14 +20,14 @@
 | `typings/godot.worker.d.ts` | `godot.worker` 模块声明（Web 构建不含） |
 | `typings/jsb.runtime.bundle.d.ts` | 运行时包对外的类型视图 |
 | `typings/jsb.editor.bundle.d.ts` | 编辑器包对外的类型视图 |
-| `.godot/jsb.editor.tools.cjs` 等三个文件 | 编辑器的常驻工具进程（签名 / 注释文档提取） |
+| `.godot/jsb.editor.tools.cjs` 等五个文件 | 编辑器的常驻工具进程（签名 / 注释文档 / 全局类元数据提取） |
 
 > [!IMPORTANT]
 > 预设文件是**从编辑器扩展内置的副本**安装的，不是从仓库目录复制。
 > 升级扩展后如果提示「建议重新安装工程文件」，重新执行一次即可。
 
-工具产物（`jsb.editor.tools.cjs` / `jsb.signature.extract.cjs` / `jsb.doc.extract.cjs`）
-装在**项目数据目录**（默认 `.godot/`），与其它生成物分开，因此不会被「无对应源即判陈旧」的
+工具产物（`jsb.editor.tools.cjs` / `jsb.signature.extract.cjs` / `jsb.doc.extract.cjs` /
+`jsb.global.class.extract.cjs` / `jsb.ts.ast.cjs`）装在**项目数据目录**（默认 `.godot/`），与其它生成物分开，因此不会被「无对应源即判陈旧」的
 清理规则误删。
 
 ## 2. 安装 TypeScript 工具链

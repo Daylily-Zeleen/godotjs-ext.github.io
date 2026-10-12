@@ -21,14 +21,15 @@ plugin writes a set of files into the project:
 | `typings/godot.worker.d.ts` | Declarations for `godot.worker` (absent from Web builds) |
 | `typings/jsb.runtime.bundle.d.ts` | The runtime bundle's outward type view |
 | `typings/jsb.editor.bundle.d.ts` | The editor bundle's outward type view |
-| `.godot/jsb.editor.tools.cjs` and two siblings | The editor's resident tool process (signature and comment-doc extraction) |
+| `.godot/jsb.editor.tools.cjs` and four siblings | The editor's resident tool process (signature, comment-doc and global-class metadata extraction) |
 
 > [!IMPORTANT]
 > The preset files come from the **editor extension's own embedded copies**, not from a repository
 > directory. After upgrading the extension, if you are told the project files should be reinstalled,
 > just run the command again.
 
-The tool artifacts (`jsb.editor.tools.cjs` / `jsb.signature.extract.cjs` / `jsb.doc.extract.cjs`) are
+The tool artifacts (`jsb.editor.tools.cjs` / `jsb.signature.extract.cjs` / `jsb.doc.extract.cjs` /
+`jsb.global.class.extract.cjs` / `jsb.ts.ast.cjs`) are
 installed into the **project data directory** (`.godot/` by default), deliberately separate from the
 generated output so the "no matching source means stale" cleanup rule cannot delete them.
 

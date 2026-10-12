@@ -177,6 +177,31 @@ export namespace C {
 }
 ```
 
+### Seen from Godot / GDScript
+
+Godot reaches a script class through the `GodotJSScript` resource object. The two sides are
+**asymmetric**:
+
+| Member | From the Godot side |
+|---|---|
+| `@bind.exposed.const()` static constant | ✅ readable. `GodotJSScript.get_script_constant_map()` / `_get_constants()` list it, so `MyClass.N` works in GDScript |
+| `@bind.exposed.shared()` shared static variable | ✅ readable and writable. `_get_members()` / `_get()` / `_set()` reach the process-wide store, so `MyClass.score` works in GDScript |
+| Static function | ❌ **not supported**, in any form |
+
+Why variables work and functions do not comes down to **whether there is an environment-independent
+place to land**:
+
+- A static constant and a shared static variable are **one `Variant`** on the C++ side (a
+  process-wide store). Every isolate agrees on the same value, so what `GodotJSScript` reads is
+  unambiguous -- there is no "which isolate does this belong to" question.
+- A static function has no such place. The script class is shared by **every JS environment**, and
+  which isolate's copy of the JS class a static function belongs to cannot be determined -- nor can
+  the side effects of calling it. So `GodotJSScript._has_static_method()` **always returns `false`**,
+  and Godot's static-call path (`has_static_method()` + `callp()`) is never entered.
+
+Bottom line: **do not expect to call a static function from GDScript**; write it as an instance
+method instead.
+
 ## Legacy decorators (deprecated)
 
 ```ts

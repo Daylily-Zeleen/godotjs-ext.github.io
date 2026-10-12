@@ -172,6 +172,26 @@ export namespace C {
 }
 ```
 
+### 从 Godot / GDScript 一侧看
+
+Godot 通过 `GodotJSScript` 这个脚本资源对象来读脚本类。两侧能力**不对称**：
+
+| 成员 | 从 Godot 一侧 |
+|---|---|
+| `@bind.exposed.const()` 静态常量 | ✅ 可读。`GodotJSScript.get_script_constant_map()` / `_get_constants()` 会列出，GDScript 里 `MyClass.N` 可用 |
+| `@bind.exposed.shared()` 共享静态变量 | ✅ 可读可写。`_get_members()` / `_get()` / `_set()` 直达进程级存储，GDScript 里 `MyClass.score` 可用 |
+| 静态函数 | ❌ **不支持**，任何形式都不行 |
+
+静态变量能走通、静态函数不能，差别在于**有没有一个环境无关的落点**：
+
+- 静态常量与共享静态变量在 C++ 侧是**一个 Variant**（进程级存储），所有 isolate 公认同一个值，
+  `GodotJSScript` 拿到的就是它，不存在"属于哪个 isolate"的问题。
+- 静态函数没有这样的落点：脚本类被**所有 JS 环境共享**，而一个静态函数属于哪个 isolate 里的
+  那份 JS 类是无法确定的，调用它会产生什么副作用也不可知。因此 `GodotJSScript._has_static_method()`
+  **恒返回 `false`**，Godot 的静态调用路径（`has_static_method()` + `callp()`）也就无从进入。
+
+结论：**静态函数不要指望从 GDScript 调**，写成实例方法。
+
 ## 旧式装饰器（弃用）
 
 ```ts
