@@ -41,6 +41,7 @@ export const sections: NavSection[] = [
             { link: "/scripting/modules", zh: "模块与类型", en: "Modules and types" },
             { link: "/scripting/annotations", zh: "注解", en: "Annotations" },
             { link: "/scripting/signals", zh: "信号", en: "Signals" },
+            { link: "/scripting/virtual-methods", zh: "虚函数与方法解析", en: "Virtual methods" },
         ],
     },
     {
