@@ -2,7 +2,7 @@
 
 Things you can run into in the current version that are not handled yet.
 
-> Last reviewed: 2026-10-12.
+> Last reviewed: 2026-10-13.
 
 ## 1. The editor shows no module dependencies for scripts
 
@@ -66,3 +66,17 @@ a line starting with `Uncaught ...` as an uncaught exception gets a false positi
 **Current behaviour**: none (not handled). When matching console text line by line, avoid a line-start `^Uncaught`
 predicate; use the prefixed form (e.g. `[jsb][Error]`) or decide on the exit code / sentinel line instead.
 
+## 5. The help documentation shows no JS-side functions, constants or annotations
+
+**Symptom**: the editor's help documentation lists the built-in functions, global constants and annotations for
+`@GDScript`, while the `@GodotJSScript` section is empty.
+
+**Cause**: those three lists come from the script language's `_get_public_functions()` /
+`_get_public_constants()` / `_get_public_annotations()`; this extension returns empty for all three
+(`jsb_script_language.h`).
+
+**Deliberate, not a defect**: exposing every global entry in the help page buys very little and makes the page
+bloated and hard to read. The C# side does not implement these three either, so this matches it.
+
+**Not affected**: script behaviour, what the annotations actually do, and type declarations / completion do not
+depend on these three hooks -- they only feed that one help section.
