@@ -2,7 +2,7 @@
 
 Things you can run into in the current version that are not handled yet.
 
-> Last reviewed: 2026-10-13.
+> Last reviewed: 2026-10-14.
 
 ## 1. The editor shows no module dependencies for scripts
 
@@ -80,3 +80,23 @@ bloated and hard to read. The C# side does not implement these three either, so 
 
 **Not affected**: script behaviour, what the annotations actually do, and type declarations / completion do not
 depend on these three hooks -- they only feed that one help section.
+
+## 6. On the JavaScriptCore backend, an infinite loop inside a worker / shadow realm cannot be aborted
+
+**Symptom**: with the JavaScriptCore backend (`use_javascriptcore`, macOS / iOS), a script that spins forever inside a
+worker or a shadow realm keeps running when the host calls `terminate()` -- the execution is never reclaimed.
+
+**Cause**: aborting a runaway script needs two hooks: an interrupt handler (quickjs installs `JS_SetInterruptHandler`,
+v8 / node rely on the engine's own `TerminateExecution`) and `TerminateExecution()` itself. JavaScriptCore exposes no
+public interrupt / time-limit API (`JSContextGroupSetExecutionTimeLimit` is private), so `set_as_interruptible()` is a
+no-op on that backend (`jsb_jsc_helper.h`) and `TerminateExecution()` only sets a flag that nothing consumes
+(`jsb_jsc_isolate.h`).
+
+**Impact**: JavaScriptCore only, and only for a runaway script inside a worker / shadow realm: the host cannot abort
+it and the execution stays stuck.
+
+**Current behaviour**: none (not handled). Avoid running scripts that may loop forever inside a worker / shadow realm
+on that backend; use the v8 / node / quickjs(-ng) backends when the execution has to be abortable.
+
+**Not affected**: worker / shadow realm on the other three backends -- v8 and node abort through the engine, quickjs
+and quickjs-ng through their interrupt callback.

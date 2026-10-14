@@ -2,7 +2,7 @@
 
 本页记录当前版本里用户会遇到、尚未处理的问题。
 
-> 最后核对：2026-10-13。
+> 最后核对：2026-10-14。
 
 ## 1. 编辑器看不到脚本的模块依赖
 
@@ -71,3 +71,20 @@ C# 侧同样没有实现这三个接口，本扩展与之一致。
 
 **不受影响**：脚本本身的功能、注解的实际行为、类型声明与自动补全都不依赖这三个接口；
 它们只喂帮助文档里那一节。
+
+## 6. JavaScriptCore 后端下，worker / shadow realm 里的死循环无法中止
+
+**现象**：JavaScriptCore 后端（`use_javascriptcore`，macOS / iOS）下，worker 或 shadow realm 执行的脚本若进入死循环，
+宿主发起的 `terminate()` 不生效——该执行会一直卡住、无法回收。
+
+**原因**：中止失控脚本依赖两个钩子：安装中断处理器（quickjs 用 `JS_SetInterruptHandler`，v8 / node 由引擎自身的
+`TerminateExecution` 生效）、以及 `TerminateExecution()` 本身。JavaScriptCore 没有公开的中断 / 超时 API
+（`JSContextGroupSetExecutionTimeLimit` 属于私有 API），所以本扩展在该后端的 `set_as_interruptible()` 是空实现
+（`jsb_jsc_helper.h`），`TerminateExecution()` 只置一个标志位、没有消费者（`jsb_jsc_isolate.h`）。
+
+**影响**：仅 JavaScriptCore 后端，且仅 worker / shadow realm 内失控的脚本；表现为宿主无法中止该执行，线程卡住。
+
+**当前做法**：无（未处理）。不要在该后端的 worker / shadow realm 里运行可能死循环的脚本；需要可中止的执行时，
+请改用 v8 / node / quickjs(-ng) 后端。
+
+**不受影响**：其它三个后端的 worker / shadow realm —— v8 与 node 由引擎原生中止，quickjs 与 quickjs-ng 经中断回调中止。
